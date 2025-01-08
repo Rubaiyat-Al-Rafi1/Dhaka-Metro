@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dhaka Metro - Payment</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="h-screen bg-gray-100 flex items-center justify-center">
+  <div id="payment-container" class="bg-green-50 shadow-md rounded-lg p-6 w-full max-w-md hidden">
+    <div class="mb-4 text-center">
+      <img src="logo.png" alt="Dhaka Metro Logo" class="w-40 mx-auto">
+    </div>
+    <div class="mb-4">
+      <label for="ticketprice" class="text-gray-700 text-lg font-semibold">Ticket Price</label>
+      <input type="text" id="ticketprice" value="0 tk" readonly
+        class="block w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500">
+    </div>
+    <div class="mb-4">
+      <label for="totalprice" class="text-gray-700 text-lg font-semibold">Total Price (including VAT)</label>
+      <input type="text" id="totalprice" value="0 tk" readonly
+        class="block w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500">
+    </div>
+    <div class="flex justify-between mb-5">
+      <label class="payment-method flex flex-col items-center cursor-pointer rounded-lg p-4 border border-gray-300 hover:border-green-600 transition-transform transform hover:scale-105">
+        <input type="radio" name="payment" value="bkash" onchange="selectPaymentMethod(this)" class="hidden">
+        <img src="bkash.png" alt="bKash Icon" class="w-16 h-16">
+      </label>
+      <label class="payment-method flex flex-col items-center cursor-pointer rounded-lg p-4 border border-gray-300 hover:border-green-600 transition-transform transform hover:scale-105">
+        <input type="radio" name="payment" value="card" onchange="selectPaymentMethod(this)" class="hidden">
+        <img src="card.png" alt="Card Icon" class="w-16 h-16">
+      </label>
+      <label class="payment-method flex flex-col items-center cursor-pointer rounded-lg p-4 border border-gray-300 hover:border-green-600 transition-transform transform hover:scale-105">
+        <input type="radio" name="payment" value="wallet" onchange="selectPaymentMethod(this)" class="hidden">
+        <img src="wallet.png" alt="E-Metro Wallet Icon" class="w-16 h-16">
+      </label>
+    </div>
+    <button id="get-ticket-btn" onclick="processPayment()"
+      class="w-full py-3 bg-green-500 text-white text-lg rounded-lg hover:bg-green-600 transition hidden">Get Ticket</button>
+  </div>
+
+  <div id="bkashModal" class="fixed inset-0 bg-black bg-opacity-70 flex justify-center items-center z-50 hidden">
+    <div class="bg-[#f51d7c] rounded-lg shadow-lg w-full max-w-md relative">
+      <div class="bg-white p-4 text-center">
+        <img src="bkash.png" alt="bKash Logo" class="w-24 mx-auto">
+      </div>
+      <div class="p-6">
+        <div class="text-center text-white space-y-4">
+          <h1 class="font-semibold">Merchant: <span class="font-light">Dhaka Metro</span></h1>
+          <h1 class="font-semibold">Invoice No.: <span class="font-light">45896745896</span></h1>
+          <h1 class="font-semibold">Amount: <span class="font-light">৳ <span id="modalAmount">0</span></span></h1>
+        </div>
+        <div class="my-4">
+          <label for="bkashAccount" class="block text-white font-semibold mb-2">Your BKash Account Number:</label>
+          <input type="text" id="bkashAccount" class="w-full p-3 rounded-lg bg-white text-gray-900" placeholder="01XXXXXXXXX">
+        </div>
+        <div class="flex items-center gap-2 text-white text-lg">
+          <input type="checkbox" id="terms" class="w-5 h-5">
+          <label for="terms">I agree to the terms and services</label>
+        </div>
+        <div class="mt-6">
+          <button onclick="proceedBkashPayment()"
+            class="w-full bg-white text-[#f51d7c] py-2 rounded-lg border border-white hover:bg-[#f51d7c] hover:text-white transition">
+            Proceed
+          </button>
+        </div>
+      </div>
+      <button onclick="closeBkashModal()" class="absolute top-2 right-2 text-white text-xl">✖</button>
+    </div>
+  </div>
+
+  <script>
+    const loadFare = () => {
+      const fare = parseFloat(sessionStorage.getItem('fare'));
+      if (isNaN(fare)) {
+        alert('No fare information found. Please select your journey again.');
+        window.location.href = 'travel.html';
+        return;
+      }
+      const vat = 1;
+      const totalPrice = fare + vat;
+      document.getElementById('ticketprice').value = `${fare} tk`;
+      document.getElementById('totalprice').value = `${totalPrice} tk`;
+    };
+
+    const openBkashModal = () => {
+      const totalPrice = document.getElementById('totalprice').value.split(' ')[0];
+      document.getElementById('modalAmount').textContent = totalPrice;
+      document.getElementById('bkashModal').classList.remove('hidden');
+    };
+
+    const closeBkashModal = () => {
+      document.getElementById('bkashModal').classList.add('hidden');
+    };
+
+    const selectPaymentMethod = (selectedRadio) => {
+      const paymentMethods = document.querySelectorAll('.payment-method');
+      paymentMethods.forEach(method => method.classList.remove('selected'));
+      selectedRadio.parentElement.classList.add('selected');
+
+      const getTicketButton = document.getElementById('get-ticket-btn');
+
+      if (selectedRadio.value === 'bkash') {
+        getTicketButton.onclick = openBkashModal;
+      } else {
+        getTicketButton.onclick = processPayment;
+      }
+
+      getTicketButton.classList.remove('hidden');
+    };
+
+    const proceedBkashPayment = () => {
+      const account = document.getElementById('bkashAccount').value;
+      const termsAccepted = document.getElementById('terms').checked;
+
+      if (!account || account.length !== 11 || isNaN(account)) {
+        alert('Please enter a valid 11-digit BKash account number.');
+        return;
+      }
+
+      if (!termsAccepted) {
+        alert('You must agree to the terms and services.');
+        return;
+      }
+
+      alert('Payment successful! Redirecting to ticket page.');
+      closeBkashModal();
+      window.location.href = 'ticket.html';
+    };
+
+    const processPayment = () => {
+      alert('Payment Successful! Redirecting to ticket page.');
+      window.location.href = 'ticket.html';
+    };
+
+    window.onload = () => {
+      const isLoggedIn = true;
+      if (isLoggedIn) {
+        document.getElementById('payment-container').classList.remove('hidden');
+        loadFare();
+      } else {
+        alert('Please log in to proceed.');
+        window.location.href = 'login.php';
+      }
+    };
+  </script>
+</body>
+
+</html>

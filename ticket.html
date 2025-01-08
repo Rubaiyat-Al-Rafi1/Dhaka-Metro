@@ -1,0 +1,61 @@
+<!DOCTYPE html>  
+<html lang="en">  
+<head>  
+    <meta charset="UTF-8">  
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">  
+    <title>Dhaka Metro - Your Ticket</title>  
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">  
+    <style>  
+        .ticket-card {  
+            width: 350px; height: 150px; border: 1px solid #d1d5db;  
+            border-radius: 12px; padding: 20px; display: flex; align-items: flex-start;  
+            background-color: #e6f4ea; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);  
+            position: relative;  
+        }  
+        .qr-code { flex: 1; display: flex; justify-content: center; align-items: center; }  
+        .ticket-info { flex: 2; margin-left: 15px; font-size: 12px; color: #4B5563; }  
+        .button {  
+            padding: 10px 15px; border-radius: 6px; border: none;  
+            cursor: pointer; color: white; font-size: 14px;  
+        }  
+        .blue-button { background-color: #3b82f6; }  
+        .blue-button:hover { background-color: #2563eb; }  
+        .green-button { background-color: #10b981; }  
+        .green-button:hover { background-color: #059669; }  
+        .buttons-container {  
+            display: flex; gap: 10px; margin-top: 20px;  
+        }  
+        .ticket-header {  
+            text-align: center; margin-bottom: 10px;  
+            font-size: 18px; font-weight: bold;  
+        }  
+        .logo {  
+            position: absolute; bottom: 10px; right: 10px;  
+            width: 50px; height: auto;  
+        }  
+    </style>  
+</head>  
+<body class="h-screen bg-gray-100 flex items-center justify-center flex-col">  
+
+    <h1 class="ticket-header">Your Ticket</h1>  
+
+    <div id="ticket-card" class="hidden">  
+        <div class="ticket-card">  
+            <img src="logo.png" alt="Logo" class="logo">  
+            <div id="qr-code" class="qr-code"></div>  
+            <div id="ticket-info" class="ticket-info"></div>  
+        </div>  
+    </div>  
+
+    <div id="login-warning" class="text-center text-red-500 font-semibold hidden">You need to log in to view your ticket.</div>  
+
+    <div class="buttons-container hidden" id="buttons-container">  
+        <button id="download-pdf-btn" class="button blue-button">Download PDF</button>  
+        <button id="back-home-btn" class="button green-button" onclick="window.location.href='index.html'">Back to Home</button>  
+    </div>  
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.3.1/jspdf.umd.min.js"></script>  
+    <script src="ticket.js"></script>
+</body>  
+</html>

@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Purchased Tickets</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 min-h-screen flex flex-col">
+    <!-- Navbar -->
+    <header class="bg-white shadow sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="flex justify-between items-center py-5">
+                <!-- Logo -->
+                <img src="logo.png" alt="Logo" class="w-36 h-auto">
+
+                <!-- Mobile Menu Button -->
+                <button id="menuButton" class="lg:hidden text-green-600 hover:text-green-800 focus:outline-none" aria-label="Open Menu">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                </button>
+
+                <!-- Desktop Navigation -->
+                <nav class="hidden lg:flex space-x-10">
+                    <a href="index.html" class="text-green-600 font-bold hover:text-green-800">Home</a>
+                    <a href="travel.html" class="text-green-600 font-bold hover:text-green-800">Travel</a>
+                    <a href="wallet.html" class="text-green-600 font-bold hover:text-green-800">Wallet</a>
+                    <a href="route.html" class="text-green-600 font-bold hover:text-green-800">Route</a>
+                    <a href="profile.php" class="text-green-600 font-bold hover:text-green-800">Profile</a>
+                    <a href="login.php" id="loginLink" class="text-green-600 font-bold hover:text-green-800">Login</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Overlay -->
+    <div id="overlay" class="fixed inset-0 bg-black bg-opacity-50 hidden z-40"></div>
+
+    <!-- Mobile Menu -->
+    <div id="mobileMenu" class="fixed inset-y-0 left-0 bg-white w-1/2 transform -translate-x-full transition-transform duration-300 z-50">
+        <!-- Close Button -->
+        <button id="closeMenuButton" class="absolute top-4 right-4 text-gray-700 text-2xl focus:outline-none" aria-label="Close Menu">&times;</button>
+
+        <!-- Navigation Links -->
+        <nav class="space-y-4 flex flex-col p-6">
+            <a href="index.html" class="text-green-600 font-bold hover:text-green-800">Home</a>
+            <a href="travel.html" class="text-green-600 font-bold hover:text-green-800">Travel</a>
+            <a href="wallet.html" class="text-green-600 font-bold hover:text-green-800">Wallet</a>
+            <a href="route.html" class="text-green-600 font-bold hover:text-green-800">Route</a>
+            <a href="profile.php" class="text-green-600 font-bold hover:text-green-800">Profile</a>
+            <a href="login.php" id="loginLinkMobile" class="text-green-600 font-bold hover:text-green-800">Login</a>
+        </nav>
+    </div>
+
+    <!-- Tickets Container -->
+    <main class="flex-1 container mx-auto px-6 py-8">
+        <h1 class="text-2xl font-bold text-gray-800 mb-6 text-center">Your Purchased Tickets</h1>
+        <div id="tickets-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+    </main>
+
+    <script>
+        // Function to toggle mobile menu visibility
+        document.getElementById('menuButton').addEventListener('click', function () {
+            document.getElementById('mobileMenu').classList.toggle('-translate-x-full');
+            document.getElementById('overlay').classList.toggle('hidden');
+        });
+
+        // Close the mobile menu when overlay is clicked
+        document.getElementById('overlay').addEventListener('click', function () {
+            document.getElementById('mobileMenu').classList.add('-translate-x-full');
+            document.getElementById('overlay').classList.add('hidden');
+        });
+
+        // Close the mobile menu when close button is clicked
+        document.getElementById('closeMenuButton').addEventListener('click', function () {
+            document.getElementById('mobileMenu').classList.add('-translate-x-full');
+            document.getElementById('overlay').classList.add('hidden');
+        });
+
+        // Load tickets from localStorage
+        async function loadTickets() {
+            const ticketsContainer = document.getElementById('tickets-container');
+            ticketsContainer.innerHTML = '';
+
+            const tickets = JSON.parse(localStorage.getItem('tickets')) || [];
+            if (tickets.length === 0) {
+                ticketsContainer.innerHTML = '<p class="text-gray-600 text-lg text-center">No tickets have been purchased yet.</p>';
+                return;
+            }
+
+            tickets.forEach(ticket => {
+                const ticketCard = document.createElement('div');
+                ticketCard.className = 'bg-white border rounded-lg shadow p-6';
+
+                const qrCodeDiv = document.createElement('div');
+                qrCodeDiv.className = 'flex justify-center mb-4';
+                const qrImage = document.createElement('img');
+                qrImage.src = ticket.qrCodeDataUrl;
+                qrImage.alt = 'QR Code';
+                qrImage.className = 'w-24 h-24';
+                qrCodeDiv.appendChild(qrImage);
+
+                const ticketInfoDiv = document.createElement('div');
+                ticketInfoDiv.className = 'space-y-2';
+                ticketInfoDiv.innerHTML = `
+                    <p class="text-gray-700"><strong>Journey:</strong> ${ticket.journey}</p>
+                    <p class="text-gray-700"><strong>Date:</strong> ${ticket.date}</p>
+                    <p class="text-gray-700"><strong>Time:</strong> ${ticket.time}</p>
+                    <p class="text-gray-700"><strong>Fare:</strong> ${ticket.fare}</p>
+                    <p class="text-gray-700"><strong>Ticket ID:</strong> ${ticket.ticketId}</p>
+                `;
+
+                const timestampDiv = document.createElement('div');
+                timestampDiv.className = 'text-gray-500 text-sm text-right';
+                timestampDiv.innerText = `Purchased on: ${ticket.timestamp}`;
+
+                ticketCard.appendChild(qrCodeDiv);
+                ticketCard.appendChild(ticketInfoDiv);
+                ticketCard.appendChild(timestampDiv);
+
+                ticketsContainer.appendChild(ticketCard);
+            });
+        }
+
+        // Load tickets on page load
+        window.onload = loadTickets;
+    </script>
+    <script src="tickets.js"></script>
+    <script src="menu.js"></script>
+</body>
+</html>

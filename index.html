@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Responsive Menu</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.0.0/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100">
+
+   <!-- Navbar Section -->
+<header class="bg-white shadow sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="flex justify-between items-center py-5">
+        <!-- Logo -->
+        <img src="logo.png" alt="Logo" class="w-36 h-auto">
+  
+        <!-- Mobile Menu Button -->
+        <button id="menuButton" class="lg:hidden text-green-600 hover:text-green-800 focus:outline-none" aria-label="Open Menu">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+        </button>
+  
+        <!-- Desktop Navigation -->
+        <nav class="hidden lg:flex space-x-10">
+          <a href="travel.html" id="travelLink" class="text-green-600 font-bold hover:text-green-800 hidden logged-in">Travel</a>
+          <a href="wallet.html" id="walletLink" class="text-green-600 font-bold hover:text-green-800 hidden logged-in">Wallet</a>
+          <a href="route.html" id="routeLink" class="text-green-600 font-bold hover:text-green-800 hidden logged-in">Route</a>
+          <a href="profile.php" id="profileLink" class="text-green-600 font-bold hover:text-green-800 hidden logged-in">Profile</a>
+          <a href="tickets.html" id="ticketsLink" class="text-green-600 font-bold hover:text-green-800 hidden logged-in">Tickets</a>
+          <a href="#" id="logoutLink" class="text-green-600 font-bold cursor-pointer hidden logged-in">Logout</a>
+          <a href="login.php" id="loginLink" class="text-green-600 font-bold hover:text-green-800 logged-out">Login</a>
+        </nav>
+      </div>
+    </div>
+  </header>
+  
+  <!-- Overlay for Mobile Menu -->
+  <div id="overlay" class="fixed inset-0 bg-black bg-opacity-50 hidden z-40"></div>
+  
+  <!-- Mobile Menu -->
+  <div id="mobileMenu" class="fixed inset-y-0 left-0 bg-white w-1/2 transform -translate-x-full transition-transform duration-300 z-50">
+    <!-- Close Button -->
+    <button id="closeMenuButton" class="absolute top-4 right-4 text-gray-700 text-2xl focus:outline-none" aria-label="Close Menu">&times;</button>
+  
+    <!-- Navigation Links -->
+    <nav class="space-y-4 flex flex-col p-6">
+      <a href="travel.html" id="travelLinkMobile" class="text-green-600 font-bold hover:text-green-800 hidden logged-in">Travel</a>
+      <a href="wallet.html" id="walletLinkMobile" class="text-green-600 font-bold hover:text-green-800 hidden logged-in">Wallet</a>
+      <a href="route.html" id="routeLinkMobile" class="text-green-600 font-bold hover:text-green-800 hidden logged-in">Route</a>
+      <a href="profile.php" id="profileLinkMobile" class="text-green-600 font-bold hover:text-green-800 hidden logged-in">Profile</a>
+      <a href="tickets.html" id="ticketsLinkMobile" class="text-green-600 font-bold hover:text-green-800 hidden logged-in">Tickets</a>
+      <a href="login.php" id="loginLinkMobile" class="text-green-600 font-bold hover:text-green-800 logged-out">Login</a>
+      <a href="#" id="logoutLinkMobile" class="text-green-600 font-bold cursor-pointer hidden logged-in">Logout</a>
+    </nav>
+  </div>
+  
+
+
+  <!-- Hero Section with Background Image -->  
+
+<section class="flex flex-col justify-center items-center text-center h-screen pt-16 bg-cover bg-center relative" style="background-image: url(metro.jpg);">
+    <!-- Dark Overlay Behind Content (Background Only) -->
+    <div class="absolute inset-0 bg-black opacity-50"></div>
+    
+    <!-- Welcome Title -->
+    <h1 class="text-5xl font-bold text-white mb-4 animate__animated animate__fadeIn">Welcome to Dhaka Metro</h1>
+    
+    <!-- Description -->
+    <p class="text-lg text-white mb-6 animate__animated animate__fadeIn animate__delay-1s">Seamless travel at your fingertips. Book tickets, manage your wallet, and more!</p>
+    
+    <!-- Call to Action Button -->
+    <button id="startJourney" class="bg-green-600 text-white py-3 px-6 rounded-lg shadow-lg hover:bg-green-700 transition duration-300 ease-in-out transform hover:scale-105" aria-label="Start your journey">
+        Start Your Journey
+    </button>
+    
+</section>
+
+<!-- Include Animate.css for animations -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+
+<!-- Optional: Add JavaScript for Button Interaction -->
+
+
+
+
+    <!-- Guidelines Section -->  
+    <section id="guidelines" class="py-16 container mx-auto text-center bg-green-50">  
+        <h2 class="text-3xl font-bold text-black mb-4">How to Purchase Your Ticket</h2>  
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">  
+            <div class="p-4 bg-white rounded-lg shadow hover:shadow-xl transition-transform">  
+                <img src="select.png" alt="Select Ticket" class="w-full h-48 object-contain rounded mb-4">  
+                <h3 class="text-xl font-bold text-green-600 mb-2">Step 1: Select</h3>  
+                <p class="text-gray-600">Choose your destination and the number of tickets you need.</p>  
+            </div>  
+            <div class="p-4 bg-white rounded-lg shadow hover:shadow-xl transition-transform">  
+                <img src="pay.png" alt="Payment" class="w-full h-48 object-contain rounded mb-4">  
+                <h3 class="text-xl font-bold text-green-600 mb-2">Step 2: Pay</h3>  
+                <p class="text-gray-600">Proceed to the payment screen and enter your details securely.</p>  
+            </div>  
+            <div class="p-4 bg-white rounded-lg shadow hover:shadow-xl transition-transform">  
+                <img src="punch.png" alt="Show Ticket" class="w-full h-48 object-contain rounded mb-4">  
+                <h3 class="text-xl font-bold text-green-600 mb-2">Step 3: View</h3>  
+                <p class="text-gray-600">View your ticket.</p>  
+            </div>  
+        </div>  
+    </section>
+    
+    
+<!-- How to Use Your Ticket Section -->  
+<section id="how-to-use-ticket" class="py-16 container mx-auto text-center">  
+    <h2 class="text-3xl font-bold text-gray-800 mb-4">How to Use Your Dhaka Metro OnePass Ticket</h2>  
+    <p class="text-gray-600 mb-6">Follow these simple steps to make your journey smooth and hassle-free:</p>  
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">  
+        <!-- Step 1: Scan and Enter -->
+        <div class="p-6 bg-white rounded-lg shadow-lg hover:shadow-xl hover:scale-105 transition-transform duration-300 flex flex-col items-center">  
+            <div class="mb-4">
+                <!-- Image for Scan and Enter -->
+                <img src="enter.jpg" alt="Scan and Enter" class="max-w-full h-auto object-contain" />
+            </div>
+            <h3 class="text-xl font-semibold mb-2">Step 1: Scan and Enter</h3>  
+            <p class="text-gray-700 text-center">Scan your QR code at the entry gate to start your journey. The gate will open once your ticket is validated.</p>  
+        </div>  
+
+        <!-- Step 2: Travel -->
+        <div class="p-6 bg-white rounded-lg shadow-lg hover:shadow-xl hover:scale-105 transition-transform duration-300 flex flex-col items-center">  
+            <div class="mb-4">
+                <!-- Image for Travel -->
+                <img src="image.png" alt="Travel" class="max-w-full h-auto object-contain" />
+            </div>
+            <h3 class="text-xl font-semibold mb-2">Step 2: Travel</h3>  
+            <p class="text-gray-700 text-center">Sit back, relax, and travel to your destination. Your ticket remains valid for the duration of your trip.</p>  
+        </div>  
+
+        <!-- Step 3: Scan and Exit -->
+        <div class="p-6 bg-white rounded-lg shadow-lg hover:shadow-xl hover:scale-105 transition-transform duration-300 flex flex-col items-center">  
+            <div class="mb-4">
+                <!-- Image for Scan and Exit -->
+                <img src="enter.jpg" alt="Scan and Exit" class="max-w-full h-auto object-contain" />
+            </div>
+            <h3 class="text-xl font-semibold mb-2">Step 3: Scan and Exit</h3>  
+            <p class="text-gray-700 text-center">At your destination, scan your ticket at the exit gate to complete your journey. The gate will open and you can exit.</p>  
+        </div>  
+    </div>  
+</section>
+
+
+    <!-- Google Play Store Section -->   
+    <div class="container flex flex-wrap items-center justify-center gap-10 p-5 max-w-5xl mx-auto">
+      <div class="app-info flex-1 max-w-md">
+          <div class="text text-gray-800">
+              <h2 class="text-2xl font-bold text-center sm:text-left">Get More Out of Dmetro with our <span class="text-green-500">mobile app</span></h2>
+              <ul class="list-none pl-0 mt-4 space-y-2 text-center sm:text-left">
+                  <li class="text-lg">Faster and easier booking</li>
+                  <li class="text-lg">Get alerts before every departure</li>
+                  <li class="text-lg">Onboard with digital tickets</li>
+              </ul>
+          </div>
+          <div class="app-icons flex justify-center sm:justify-start gap-4 mt-5">
+              <img src="psicone.png" alt="Get it on Google Play" class="w-32">
+              <img src="appst.png" alt="Download on the App Store" class="w-32">
+          </div>
+      </div>
+      <div class="illustration flex-1 max-w-md">
+          <img src="getapp.png" alt="Mobile App Illustration" class="w-full h-auto">
+      </div>
+  </div>
+  
+    
+
+  <section id="contact" class="py-16 w-full bg-green-600 text-center text-white">  
+    <div class="container mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
+        <!-- Contact Form -->
+        <div class="text-center">
+            <h2 class="text-3xl font-bold mb-4">Contact Us</h2>  
+            <p class="text-lg mb-6">We're here to help! If you have any questions or need assistance, please reach out to us:</p>  
+
+            <form id="contactForm" class="space-y-4">
+                <input type="text" id="name" class="w-full p-3 border-2 border-green-400 rounded-lg focus:ring-2 focus:ring-green-300" placeholder="Your Name" required>
+                <input type="email" id="email" class="w-full p-3 border-2 border-green-400 rounded-lg focus:ring-2 focus:ring-green-300" placeholder="Your Email" required>
+                <input type="tel" id="phone" class="w-full p-3 border-2 border-green-400 rounded-lg focus:ring-2 focus:ring-green-300" placeholder="Your Phone Number" required>
+                <textarea id="message" class="w-full p-3 border-2 border-green-400 rounded-lg focus:ring-2 focus:ring-green-300" rows="4" placeholder="Your Message" required></textarea>
+                <button type="submit" class="bg-white text-green-600 py-3 px-6 rounded-lg hover:bg-gray-200 transition">
+                    Submit
+                </button>
+            </form>  
+        </div>
+
+        <!-- FAQ Section -->
+        <div class="text-left">
+            <h2 class="text-3xl font-bold text-white mb-4">Frequently Asked Questions</h2>  
+            <div class="space-y-6">
+                <div>
+                    <h3 class="font-bold text-green-300">Q: How can I contact customer support?</h3>
+                    <p class="text-white">A: You can fill out the form, and our team will get back to you within 24 hours. You can also reach us via email or phone listed at the bottom of this page.</p>
+                </div>
+                <div>
+                    <h3 class="font-bold text-green-300">Q: What is your response time?</h3>
+                    <p class="text-white">A: Our usual response time is within 1-2 business days, depending on the nature of your inquiry.</p>
+                </div>
+                <div>
+                    <h3 class="font-bold text-green-300">Q: Can I visit your office in person?</h3>
+                    <p class="text-white">A: Yes, you are welcome to visit our office during business hours. Please contact us in advance to schedule an appointment.</p>
+                </div>
+                <div>
+                    <h3 class="font-bold text-green-300">Q: Do you offer support during weekends?</h3>
+                    <p class="text-white">A: We provide limited support during weekends. For urgent matters, please mark your inquiry as "urgent" in the contact form.</p>
+                </div>
+            </div>  
+        </div>
+    </div>
+</section>
+
+      
+  
+  
+
+    <!-- Menu Panel (Mobile) -->  
+    <div id="menuPanel" class="fixed top-0 left-0 w-3/4 h-full bg-white shadow-lg transform -translate-x-full transition-transform duration-300 md:hidden">  
+        <button id="closeButton" class="absolute top-4 right-4 text-3xl text-gray-700 focus:outline-none" aria-label="Close Menu">  
+            &times;  
+        </button>  
+        <ul class="mt-16 space-y-6 pl-6">  
+            <!-- Login link for mobile when not logged in -->
+            <li><a href="login.html" id="loginLinkMobile" class="text-lg text-gray-700 hover:text-green-600 transition hidden">Login</a></li>  
+
+            <!-- Menu links for mobile when logged in -->
+            <li><a href="travel.html" id="travelLinkMobile" class="text-lg text-gray-700 hover:text-green-600 transition hidden">Travel</a></li>  
+            <li><a href="wallet.html" id="walletLinkMobile" class="text-lg text-gray-700 hover:text-green-600 transition hidden">Wallet</a></li>  
+            <li><a href="route.html" id="routeLinkMobile" class="text-lg text-gray-700 hover:text-green-600 transition hidden">Route</a></li>  
+            <li><a href="profile.php" id="profileLinkMobile" class="text-lg text-gray-700 hover:text-green-600 transition hidden">Profile</a></li>    
+            <li><a href="tickets.html" id="ticketsLinkMobile" class="text-lg text-gray-700 hover:text-green-600 transition hidden">My Tickets</a></li>   
+        </ul>  
+    </div>  
+
+    <!-- Overlay -->  
+    <div id="overlay" class="fixed inset-0 bg-black bg-opacity-50 hidden"></div>  
+
+    <!-- Footer Section -->  
+    <footer class="bg-white shadow mt-16 py-4">  
+        <div class="container mx-auto text-center">  
+            <p class="text-black-600 font-bold">&copy; 2024 Dhaka Metro. All rights reserved.</p>  
+        </div>  
+    </footer>
+     
+ <!-- External JS -->
+    <script src="index.js"></script>
+    <script src="menu.js"></script>
+</body>
+</html>

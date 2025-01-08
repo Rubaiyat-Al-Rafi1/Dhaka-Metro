@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Dhaka Metro - Wallet</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 h-screen flex flex-col">
+
+  <!-- Navbar -->
+ <!-- Navbar -->
+  <header class="bg-white shadow sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="flex justify-between items-center py-5">
+        <!-- Logo -->
+        <img src="logo.png" alt="Logo" class="w-36 h-auto">
+
+        <!-- Mobile Menu Button -->
+        <button id="menuButton" class="lg:hidden text-green-600 hover:text-green-800 focus:outline-none" aria-label="Open Menu">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+        </button>
+
+        <!-- Desktop Navigation -->
+        <nav class="hidden lg:flex space-x-10">
+          <a href="index.html" class="text-green-600 font-bold hover:text-green-800">Home</a>
+          <a href="travel.html" class="text-green-600 font-bold hover:text-green-800">Travel</a>
+          <a href="route.html" class="text-green-600 font-bold hover:text-green-800">Route</a>
+          <a href="profile.php" class="text-green-600 font-bold hover:text-green-800">Profile</a>
+          <a href="tickets.html" class="text-green-600 font-bold hover:text-green-800">Tickets</a>
+          <a href="login.php" id="loginLink" class="text-green-600 font-bold hover:text-green-800">Login</a>
+          <a href="#" id="logoutLink" class="text-green-600 font-bold hidden">Logout</a>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <!-- Overlay -->
+  <div id="overlay" class="fixed inset-0 bg-black bg-opacity-50 hidden z-40"></div>
+
+  <!-- Mobile Menu -->
+  <div id="mobileMenu" class="fixed inset-y-0 left-0 bg-white w-1/2 transform -translate-x-full transition-transform duration-300 z-50">
+    <!-- Close Button -->
+    <button id="closeMenuButton" class="absolute top-4 right-4 text-gray-700 text-2xl focus:outline-none" aria-label="Close Menu">&times;</button>
+    <nav class="space-y-4 flex flex-col p-6">
+      <a href="index.html" class="text-green-600 font-bold hover:text-green-800">Home</a>
+      <a href="travel.html" class="text-green-600 font-bold hover:text-green-800">Travel</a>
+      <a href="route.html" class="text-green-600 font-bold hover:text-green-800">Route</a>
+      <a href="profile.php" class="text-green-600 font-bold hover:text-green-800">Profile</a>
+      <a href="tickets.html" class="text-green-600 font-bold hover:text-green-800">Tickets</a>
+      <a href="login.php" id="loginLinkMobile" class="text-green-600 font-bold hover:text-green-800">Login</a>
+      <a href="#" id="logoutLinkMobile" class="text-green-600 font-bold hidden">Logout</a>
+    </nav>
+  </div>
+
+  <!-- Wallet Section -->
+  <div class="container mx-auto p-6 bg-white shadow-md rounded-lg max-w-md mt-6">
+    <h1 class="text-2xl font-bold text-center text-green-600 mb-4">Your Wallet</h1>
+    <div class="text-center text-lg text-gray-700 mb-6">Current Balance: <span id="balance-amount" class="font-semibold">0</span> tk</div>
+
+    <label for="recharge-amount" class="block text-gray-600 mb-2">Enter Recharge Amount</label>
+    <input type="number" id="recharge-amount" min="0" placeholder="Amount in tk" class="w-full p-2 border border-gray-300 rounded mb-4 focus:ring-2 focus:ring-green-600 focus:outline-none">
+
+    <div class="flex justify-around mb-6">
+      <!-- bKash Option -->
+      <label class="flex flex-col items-center cursor-pointer" onclick="selectPaymentMethod('bkash')">
+        <input type="radio" name="payment" value="bkash" id="bkash" class="hidden">
+        <img id="bkash-option" src="bkash.png" alt="bKash Icon" class="w-16 h-16 border-2 border-gray-300 rounded hover:border-green-800">
+        <span class="text-gray-700 text-sm mt-2">bKash</span>
+      </label>
+
+      <!-- Card Option (Disabled) -->
+      <label class="flex flex-col items-center cursor-not-allowed opacity-50">
+        <input type="radio" name="payment" value="card" id="card" class="hidden" disabled>
+        <img id="card-option" src="card.png" alt="Card Icon" class="w-16 h-16 border-2 border-gray-300 rounded">
+        <span class="text-gray-700 text-sm mt-2">Card (Inactive)</span>
+      </label>
+    </div>
+
+    <button onclick="rechargeWallet()" class="w-full bg-green-600 text-white py-3 rounded hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-600">Recharge Wallet</button>
+  </div>
+
+  <!-- bKash Payment Modal -->
+  <div id="bkashModal" class="fixed inset-0 bg-black bg-opacity-70 flex justify-center items-center z-50 hidden">
+    <div class="bg-[#f51d7c] rounded-lg shadow-lg w-full max-w-md relative">
+      <div class="bg-white p-4 text-center">
+        <img src="bkash.png" alt="bKash Logo" class="w-24 mx-auto">
+      </div>
+      <div class="p-6 text-white">
+        <h1 class="font-semibold text-center">Recharge Amount: <span id="modalAmount" class="font-light">0</span> tk</h1>
+        <label for="bkashAccount" class="block mt-4 text-sm">bKash Account Number:</label>
+        <input type="text" id="bkashAccount" class="w-full p-2 rounded-lg bg-white text-gray-900 mt-2">
+        <div class="flex justify-between items-center mt-4">
+          <label for="terms" class="text-sm">
+            <input type="checkbox" id="terms" class="mr-2"> Agree to Terms
+          </label>
+        </div>
+        <button onclick="proceedBkashPayment()" class="w-full bg-white text-[#f51d7c] py-2 rounded-lg mt-6 hover:bg-[#f51d7c] hover:text-white">Proceed</button>
+      </div>
+      <button onclick="closeBkashModal()" class="absolute top-2 right-2 text-white text-xl">✖</button>
+    </div>
+  </div>
+
+  <!-- JavaScript -->
+  <script>
+    function rechargeWallet() {
+      const rechargeAmount = parseFloat(document.getElementById('recharge-amount').value);
+
+      if (isNaN(rechargeAmount) || rechargeAmount <= 0) {
+        alert('Enter a valid recharge amount!');
+        return;
+      }
+
+      // Get the selected payment method
+      const selectedMethod = document.querySelector('input[name="payment"]:checked')?.value;
+
+      if (selectedMethod === 'bkash') {
+        // Show the bKash modal for payment confirmation
+        document.getElementById('modalAmount').textContent = rechargeAmount;
+        document.getElementById('bkashModal').classList.remove('hidden');
+      } else if (selectedMethod === 'card') {
+        // Card is inactive
+        alert('Card payment is not active at the moment.');
+      } else {
+        alert('Please select a payment method.');
+      }
+    }
+
+    function closeBkashModal() {
+      document.getElementById('bkashModal').classList.add('hidden');
+    }
+
+    function proceedBkashPayment() {
+      const bkashAccount = document.getElementById('bkashAccount').value;
+      const termsAccepted = document.getElementById('terms').checked;
+
+      if (!bkashAccount || bkashAccount.length !== 11 || isNaN(bkashAccount)) {
+        alert('Enter a valid 11-digit bKash account number.');
+        return;
+      }
+
+      if (!termsAccepted) {
+        alert('You must agree to the terms and services.');
+        return;
+      }
+
+      // Add recharge logic (e.g., backend API integration)
+      alert('Payment successful! Wallet recharged.');
+      closeBkashModal();
+
+      // Update balance
+      const rechargeAmount = parseFloat(document.getElementById('modalAmount').textContent);
+      const balanceAmountElement = document.getElementById('balance-amount');
+      const currentBalance = parseFloat(balanceAmountElement.textContent);
+      balanceAmountElement.textContent = (currentBalance + rechargeAmount).toFixed(2) ;
+
+      document.getElementById('recharge-amount').value = '';
+    }
+
+    function selectPaymentMethod(method) {
+      const bkashOption = document.getElementById('bkash-option');
+      const cardOption = document.getElementById('card-option');
+
+      // Reset all borders to default
+      bkashOption.classList.remove('border-green-600');
+      bkashOption.classList.add('border-gray-300');
+      cardOption.classList.remove('border-green-600');
+      cardOption.classList.add('border-gray-300');
+
+      // Highlight the selected method
+      if (method === 'bkash') {
+        bkashOption.classList.add('border-green-600');
+        bkashOption.classList.remove('border-gray-300');
+        document.getElementById('bkash').checked = true;
+      } else if (method === 'card') {
+        alert('Card payment is not active.');
+      }
+    }
+  </script>
+    <script src="menu.js"></script>
+</body>
+</html>
+=
