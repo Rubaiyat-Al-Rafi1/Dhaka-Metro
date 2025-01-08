@@ -104,82 +104,9 @@
   </div>
 
   <!-- JavaScript -->
-  <script>
-    function rechargeWallet() {
-      const rechargeAmount = parseFloat(document.getElementById('recharge-amount').value);
+ 
+  <script src="menu.js"></script>
+  <script src="wallet.js"></script>
 
-      if (isNaN(rechargeAmount) || rechargeAmount <= 0) {
-        alert('Enter a valid recharge amount!');
-        return;
-      }
-
-      // Get the selected payment method
-      const selectedMethod = document.querySelector('input[name="payment"]:checked')?.value;
-
-      if (selectedMethod === 'bkash') {
-        // Show the bKash modal for payment confirmation
-        document.getElementById('modalAmount').textContent = rechargeAmount;
-        document.getElementById('bkashModal').classList.remove('hidden');
-      } else if (selectedMethod === 'card') {
-        // Card is inactive
-        alert('Card payment is not active at the moment.');
-      } else {
-        alert('Please select a payment method.');
-      }
-    }
-
-    function closeBkashModal() {
-      document.getElementById('bkashModal').classList.add('hidden');
-    }
-
-    function proceedBkashPayment() {
-      const bkashAccount = document.getElementById('bkashAccount').value;
-      const termsAccepted = document.getElementById('terms').checked;
-
-      if (!bkashAccount || bkashAccount.length !== 11 || isNaN(bkashAccount)) {
-        alert('Enter a valid 11-digit bKash account number.');
-        return;
-      }
-
-      if (!termsAccepted) {
-        alert('You must agree to the terms and services.');
-        return;
-      }
-
-      // Add recharge logic (e.g., backend API integration)
-      alert('Payment successful! Wallet recharged.');
-      closeBkashModal();
-
-      // Update balance
-      const rechargeAmount = parseFloat(document.getElementById('modalAmount').textContent);
-      const balanceAmountElement = document.getElementById('balance-amount');
-      const currentBalance = parseFloat(balanceAmountElement.textContent);
-      balanceAmountElement.textContent = (currentBalance + rechargeAmount).toFixed(2) ;
-
-      document.getElementById('recharge-amount').value = '';
-    }
-
-    function selectPaymentMethod(method) {
-      const bkashOption = document.getElementById('bkash-option');
-      const cardOption = document.getElementById('card-option');
-
-      // Reset all borders to default
-      bkashOption.classList.remove('border-green-600');
-      bkashOption.classList.add('border-gray-300');
-      cardOption.classList.remove('border-green-600');
-      cardOption.classList.add('border-gray-300');
-
-      // Highlight the selected method
-      if (method === 'bkash') {
-        bkashOption.classList.add('border-green-600');
-        bkashOption.classList.remove('border-gray-300');
-        document.getElementById('bkash').checked = true;
-      } else if (method === 'card') {
-        alert('Card payment is not active.');
-      }
-    }
-  </script>
-    <script src="menu.js"></script>
 </body>
 </html>
-=
